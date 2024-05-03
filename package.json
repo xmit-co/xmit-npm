@@ -1,6 +1,6 @@
 {
   "name": "@xmit.co/xmit",
-  "version": "0.2.8-0",
+  "version": "0.2.9-0",
   "description": "Launch static websites on xmit.co",
   "license": "0BSD",
   "bin": {
