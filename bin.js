@@ -35,7 +35,8 @@ class Binary {
       mkdirSync(this.installDirectory, { recursive: true });
     }
 
-    this.binaryPath = join(this.installDirectory, this.name);
+    const binaryName = goos === "windows" ? `${this.name}.exe` : this.name;
+    this.binaryPath = join(this.installDirectory, binaryName);
   }
   install(fetchOptions, suppressLogs = false) {
     if (existsSync(this.binaryPath)) {
@@ -68,7 +69,14 @@ class Binary {
         });
       })
       .then(() => {
-        renameSync(join(this.installDirectory, this.name), this.binaryPath);
+        const extractedName = goos === "windows" ? `${this.name}.exe` : this.name;
+        const extractedPath = join(this.installDirectory, extractedName);
+
+        // Only rename if the extracted file is in a different location
+        if (extractedPath !== this.binaryPath) {
+          renameSync(extractedPath, this.binaryPath);
+        }
+
         if (!suppressLogs) {
           console.info(`${this.name} has been installed!`);
         }
